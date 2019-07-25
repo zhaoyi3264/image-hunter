@@ -28,6 +28,11 @@ public class MessageDialog extends CloseOnLoseFocusDialog {
 		showDialog();
 	}
 	
+	/**
+	 * Set the message in the dialog
+	 * 
+	 * @param message - the message to show
+	 */
 	public void setText(String message) {
 		display.setText("\r\n    " + message + "    \r\n");
 	}
