@@ -8,9 +8,19 @@ import javax.swing.JMenuItem;
 import zzy.menu.BasicMenu;
 import zzy.view.collector.CollectorWindow;
 
+/**
+ * A home menu for collector
+ * 
+ * @author Zhaoyi
+ */
 public class HomeMenu extends BasicMenu {
 	private static final long serialVersionUID = -1753266645449136508L;
 
+	/**
+	 * Construct a menu
+	 * 
+	 * @param parent - the parent window of the menu
+	 */
 	public HomeMenu(CollectorWindow parent) {
 		super(parent);
 		setText("Home");
@@ -22,6 +32,9 @@ public class HomeMenu extends BasicMenu {
 		addMenuItems(this, hide);
 	}
 
+	/**
+	 * Determine which menu item is clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {

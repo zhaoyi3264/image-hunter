@@ -8,9 +8,20 @@ import javax.swing.JMenuItem;
 
 import zzy.util.LoggableWindow;
 
+/**
+ * A menu for manipulating AutoScrollPane
+ * 
+ * @author Zhaoyi
+ *
+ */
 public class ConsoleMenu extends BasicMenu {
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Construct a menu
+	 * 
+	 * @param parent - the parent window for the menu
+	 */
 	public ConsoleMenu(LoggableWindow parent) {
 		super(parent);
 		setText("Console");
@@ -23,6 +34,9 @@ public class ConsoleMenu extends BasicMenu {
 		addMenuItems(this, lineWrap, clearC);
 	}
 
+	/**
+	 * Determine which item is clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {

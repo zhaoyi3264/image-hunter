@@ -9,9 +9,19 @@ import zzy.menu.BasicMenu;
 import zzy.view.processor.ClipboardMonitor;
 import zzy.worker.processor.Processor;
 
+/**
+ * A menu to help to export records for clipboard monitor
+ * 
+ * @author Zhaoyi
+ */
 public class ExportMenu extends BasicMenu {
 	private static final long serialVersionUID = 1396809839286717248L;
 
+	/**
+	 * Construct a menu
+	 * 
+	 * @param parent - the parent window of the menu
+	 */
 	public ExportMenu(ClipboardMonitor parent) {
 		super(parent);
 		setText("Export");
@@ -30,25 +40,28 @@ public class ExportMenu extends BasicMenu {
 		addMenuItems(this, exF, exFTo);
 	}
 
+	/**
+	 * Determine which menu item is clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Processor p = ((ClipboardMonitor) parent).getProcessor();
-			switch (e.getActionCommand()) {
-				case "Export":
-					p.export();
-					break;
-				case "Export to...":
-					p.exportTo();
-					break;
-				case "Export and exit":
-					p.exportAndExit();
-					break;
-				case "Export failed":
-					p.exportFailed();
-					break;
-				case "Export failed to...":
-					p.exportFailedTo();
-					break;
-			}
+		switch (e.getActionCommand()) {
+			case "Export":
+				p.export();
+				break;
+			case "Export to...":
+				p.exportTo();
+				break;
+			case "Export and exit":
+				p.exportAndExit();
+				break;
+			case "Export failed":
+				p.exportFailed();
+				break;
+			case "Export failed to...":
+				p.exportFailedTo();
+				break;
+		}
 	}
 }

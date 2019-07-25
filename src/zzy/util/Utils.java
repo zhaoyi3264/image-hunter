@@ -8,6 +8,11 @@ import java.io.Closeable;
 import java.io.IOException;
 
 public class Utils {
+	/**
+	 * Close the given resources
+	 * 
+	 * @param closeable - the resources to be closed
+	 */
 	public static void close(Closeable... closeable) {
 		for (Closeable c : closeable) {
 			try {

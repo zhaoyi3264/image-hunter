@@ -9,9 +9,19 @@ import zzy.menu.BasicMenu;
 import zzy.view.collector.CollectorWindow;
 import zzy.worker.collector.Collector;
 
+/**
+ * A menu to manage collection in collector
+ * 
+ * @author Zhaoyi
+ */
 public class CollectionMenu extends BasicMenu {
 	private static final long serialVersionUID = -8078231079062744263L;
 
+	/**
+	 * Construct a menu
+	 * 
+	 * @param parent - the parent window of the menu
+	 */
 	public CollectionMenu(CollectorWindow parent) {
 		super(parent);
 		setText("Collection");
@@ -28,6 +38,9 @@ public class CollectionMenu extends BasicMenu {
 		addMenuItems(this, showC, showF, showB, clear);
 	}
 
+	/**
+	 * Determine which menu item is clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Collector c = ((CollectorWindow) parent).getCollector();

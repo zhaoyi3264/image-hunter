@@ -9,9 +9,19 @@ import zzy.menu.BasicMenu;
 import zzy.view.processor.ClipboardMonitor;
 import zzy.worker.processor.Processor;
 
+/**
+ * A menu to manage records in clipboard monitor
+ * 
+ * @author Zhaoyi
+ */
 public class RecordMenu extends BasicMenu {
 	private static final long serialVersionUID = 6119815660426360109L;
 
+	/**
+	 * Construct a menu
+	 * 
+	 * @param parent - the parent window of the menu
+	 */
 	public RecordMenu(ClipboardMonitor parent) {
 		super(parent);
 		setText("Record");
@@ -28,6 +38,9 @@ public class RecordMenu extends BasicMenu {
 		addMenuItems(this, showU, showF, showB, clearR);
 	}
 
+	/**
+	 * Determine which menu item is clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Processor p = ((ClipboardMonitor) parent).getProcessor();

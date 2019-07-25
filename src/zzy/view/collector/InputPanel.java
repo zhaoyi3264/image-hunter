@@ -6,7 +6,6 @@ import java.awt.Insets;
 import java.net.MalformedURLException;
 import java.util.regex.Pattern;
 
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -15,14 +14,22 @@ import zzy.document.CharacterDocument;
 import zzy.util.Utils;
 import zzy.worker.collector.Collector;
 
-public class InputPanel extends JPanel { // TODO: advanced inputs in a new panel
+/**
+ * A input panel for collector window
+ * 
+ * @author Zhaoyi
+ */
+public class InputPanel extends JPanel {
 	private static final long serialVersionUID = -7320413027934717176L;
 	private JTextField url;
 	private JTextField clazz;
 	private JTextField attr;
 	private PlaceHolderPanel place;
 
-	public InputPanel() { // TODO: split
+	/**
+	 * Constuct an input panel using gridbag layout
+	 */
+	public InputPanel() {
 		GridBagLayout gb = new GridBagLayout();
 		GridBagConstraints gc = new GridBagConstraints();
 		setLayout(gb);
@@ -62,6 +69,12 @@ public class InputPanel extends JPanel { // TODO: advanced inputs in a new panel
 		Utils.addComponent(this, gb, gc, place = new PlaceHolderPanel());
 	}
 
+	/**
+	 * Update the collector with the inputs
+	 * 
+	 * @param co - the collector tp update
+	 * @throws MalformedURLException if errors occur among the input
+	 */
 	public void updateCollector(Collector co) throws MalformedURLException {
 		String u = url.getText();
 		String c = clazz.getText();
@@ -91,12 +104,5 @@ public class InputPanel extends JPanel { // TODO: advanced inputs in a new panel
 			co.setFrom(f);
 			co.setTo(t);
 		}
-	}
-	
-	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.add(new InputPanel());
-		frame.pack();
-		frame.setVisible(true);
 	}
 }

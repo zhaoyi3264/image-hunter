@@ -91,7 +91,7 @@ public class ClipboardMonitor extends LoggableWindow {
 		Utils.addComponent(this, gb, gc, new ProcessorButton("Exit", this));
 
 		// initialize the window
-//		setResizable(false);
+		// setResizable(false);
 		setAlwaysOnTop(true);
 		setTitle("Clipboard Monitor");
 		setSize(w, h);
@@ -155,19 +155,27 @@ public class ClipboardMonitor extends LoggableWindow {
 	 * Change the Processor according to the selected item in the combo box, copying
 	 * the unexported and failed records
 	 */
-	public void changeProcessor() { // TODO: donot change if the same
+	public void changeProcessor() {
 		// copy the records if the Processor is not null
 		Set<String> records = p != null ? p.getRecords() : null;
 		List<String> failedRecords = p != null ? p.getFailedRecords() : null;
 		switch ((Mode) box.getSelectedItem()) {
 			case Wallhaven:
-				p = new WallhavenProcessor(records, failedRecords, this, console);
+				if (!(p instanceof WallhavenProcessor))
+					p = new WallhavenProcessor(records, failedRecords, this, console);
+				else
+					return;
 				break;
 			case Yandere:
-				p = new YandereProcessor(records, failedRecords, this, console);
+				if (!(p instanceof YandereProcessor))
+					p = new YandereProcessor(records, failedRecords, this, console);
+				else return;
 				break;
 			case General:
-				p = new GeneralProcessor(records, failedRecords, this, console);
+				if (!(p instanceof GeneralProcessor))
+					p = new GeneralProcessor(records, failedRecords, this, console);
+				else
+					return;
 				break;
 		}
 		console.log(box.getSelectedItem() + " processor loaded");
@@ -256,7 +264,7 @@ public class ClipboardMonitor extends LoggableWindow {
 		}
 	}
 
-	public static void main(String[] args) { // TODO: initialize the size according to screen size?
+	public static void main(String[] args) {
 		ClipboardMonitor m = new ClipboardMonitor();
 		m.start();
 	}

@@ -8,9 +8,19 @@ import javax.swing.JMenuItem;
 import zzy.menu.BasicMenu;
 import zzy.view.processor.ClipboardMonitor;
 
+/**
+ * A home menu for clipboard manager
+ * 
+ * @author Zhaoyi
+ */
 public class HomeMenu extends BasicMenu {
 	private static final long serialVersionUID = -801326250393125057L;
 
+	/**
+	 * Construct a menu
+	 * 
+	 * @param parent - the parent window of the menu
+	 */
 	public HomeMenu(ClipboardMonitor parent) {
 		super(parent);
 		setText("Home");
@@ -26,6 +36,9 @@ public class HomeMenu extends BasicMenu {
 		addMenuItems(this, collector, res_pau, exit);
 	}
 
+	/**
+	 * Determine which menu item is clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {

@@ -10,9 +10,19 @@ import zzy.util.LoggableWindow;
 import zzy.view.processor.ClipboardMonitor;
 import zzy.worker.processor.Processor;
 
+/**
+ * A menu to manage export location of clipboard manager
+ * 
+ * @author Zhaoyi
+ */
 public class LocationMenu extends BasicMenu {
 	private static final long serialVersionUID = -1509559498606660625L;
 
+	/**
+	 * Construct a menu
+	 * 
+	 * @param parent - the parent window of the menu
+	 */
 	public LocationMenu(LoggableWindow parent) {
 		super(parent);
 		setText("Location");
@@ -30,9 +40,12 @@ public class LocationMenu extends BasicMenu {
 		addMenuItems(this, changeLoc, showLoc, openLoc, clearLoc);
 	}
 
+	/**
+	 * Determine which menu item is clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Processor p = ((ClipboardMonitor)parent).getProcessor();
+		Processor p = ((ClipboardMonitor) parent).getProcessor();
 		switch (e.getActionCommand()) {
 			case "Change export location":
 				p.changeLocation();

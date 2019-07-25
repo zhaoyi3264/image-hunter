@@ -9,24 +9,51 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import zzy.util.Timer;
 import zzy.view.processor.AutoScrollPane;
 import zzy.view.processor.ClipboardMonitor;
 
+
+/**
+ * A Yandere URL processor
+ * 
+ * @author Zhaoyi
+ */
 public class YandereProcessor extends Processor {
 	private String[] candidate = new String[] { "png", "highres", "highres-show" };
 
+	/**
+	 * Constructs a Yandere processor with previous records
+	 * 
+	 * @param records       - previous records
+	 * @param failedRecords - previous failed records
+	 * @param parent        - parent window of processor
+	 * @param console       - console to print message to
+	 */
 	public YandereProcessor(Set<String> records, List<String> failedRecords,
 			ClipboardMonitor parent, AutoScrollPane console) {
 		super(records, failedRecords, parent, console);
 	}
 
+	/**
+	 * Check if the URL is legal
+	 * 
+	 * @param url - URL to check
+	 * @throws Exception if the URL is not legal
+	 */
 	@Override
 	protected void check(String url) throws Exception {
-		if(!Pattern.matches("https://yande.re/post/show/\\d+", url))
+		if (!Pattern.matches("https://yande.re/post/show/\\d+", url))
 			throw new Exception();
 	}
 
+	/**
+	 * Get the resource URL base on the given URL
+	 * 
+	 * @param url   - base URL
+	 * @param trial - number of times to try to get connection
+	 * @return the resource URL
+	 * @throws IOException if cannot get URL connection
+	 */
 	@Override
 	protected String getTrueURL(String url, int trial) throws IOException {
 		Document document; // TODO: time out
@@ -40,18 +67,5 @@ public class YandereProcessor extends Processor {
 		for (int i = 0; ((image == null) && i < candidate.length); i++)
 			image = sidebar.getElementById(candidate[i]);
 		return image.attr("href");
-	}
-
-	public static void main(String[] args) { //TODO: remove
-		try {
-			Timer.start();
-			YandereProcessor p = new YandereProcessor(null, null, null, null);
-			String s = p.getTrueURL("https://yande.re/post/show/551939", 1);
-			Timer.stop();
-			System.out.println(Timer.returnStringTime());
-			System.out.println(s);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

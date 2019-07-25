@@ -32,7 +32,7 @@ import zzy.view.processor.ClipboardMonitor;
  * 
  * @author Zhaoyi
  */
-public abstract class Processor implements Showable{ // TODO: use multiple-thread to process maybe
+public abstract class Processor implements Showable { // TODO: use multiple-thread to process maybe
 	public final static File DEFAULT_LOCATION = new File("exported_records.txt");
 	public final static String[] options = new String[] { "Yes", "No" };
 	protected final static int MAX_TRIALS = 1;
@@ -116,7 +116,6 @@ public abstract class Processor implements Showable{ // TODO: use multiple-threa
 		String url = null;
 		BufferedWriter writer = null;
 		try {
-			// TODO: create a window at the beginning xxx
 			writer = new BufferedWriter(new FileWriter(path, true));
 			writer.append(getHeader()).write(System.lineSeparator());
 			while (itr.hasNext()) {
@@ -240,10 +239,16 @@ public abstract class Processor implements Showable{ // TODO: use multiple-threa
 		dialog.setVisible(true);
 	}
 
+	/**
+	 * Show the export location
+	 */
 	public void showLocation() {
 		new MessageDialog(parent, "Current export location", path.getAbsolutePath());
 	}
 
+	/**
+	 * Open the txt file
+	 */
 	public void openLocation() {
 		try {
 			Runtime.getRuntime().exec("explorer " + path.getAbsolutePath());
@@ -252,6 +257,9 @@ public abstract class Processor implements Showable{ // TODO: use multiple-threa
 		}
 	}
 
+	/**
+	 * Clear the txt file
+	 */
 	public void clearLocation() {
 		if (JOptionPane.showOptionDialog(parent,
 				"Do you want to clear the file at\r\n" + path.getAbsolutePath(), "WARNING",
@@ -269,33 +277,69 @@ public abstract class Processor implements Showable{ // TODO: use multiple-threa
 	}
 
 	// records, simplified by Showable
+	/**
+	 * Show unexported records
+	 */
 	public void showU() {
 		showByType(unexported, "Unexported", parent);
 	}
 
+	/**
+	 * Show failed records
+	 */
 	public void showF() {
 		showByType(failed, "Failed", parent);
 	}
 
+	/**
+	 * Show both records
+	 */
 	public void showB() {
 		showBoth(unexported, failed, "Unexported", "Failed", parent);
 	}
 
+	/**
+	 * Clear records
+	 */
 	public void clearRecords() {
 		clearRecords(unexported, failed, "Unexported", "Failed", parent, console);
 	}
 
 	// ------------------------------------------------------------------------------------------//
 
+	/**
+	 * Return the header of export
+	 * 
+	 * @return the header of export
+	 */
 	private String getHeader() {
 		return stars + this.getClass().getSimpleName() + format.format(new Date()) + stars;
 	}
 
+	/**
+	 * Return the footer of export
+	 * 
+	 * @return the footer of export
+	 */
 	private String getFooter() {
 		return "Successed records: " + getSuccessed();
 	}
 
+	/**
+	 * Check if the URL is legal
+	 * 
+	 * @param url - URL to check
+	 * @throws Exception if the URL is not legal
+	 */
 	protected abstract void check(String url) throws Exception;
 
+	/**
+	 * Get the resource URL base on the given URL
+	 * 
+	 * @param url   - base URL
+	 * @param trial - number of times to try to get connection
+	 * @return the resource URL
+	 * @throws IOException if cannot get URL connection
+	 */
 	protected abstract String getTrueURL(String url, int trial) throws IOException;
 }

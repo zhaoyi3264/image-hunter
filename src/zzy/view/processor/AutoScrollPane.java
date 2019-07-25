@@ -32,10 +32,6 @@ public class AutoScrollPane extends JScrollPane {
 	 * @param rows - number of rows
 	 */
 	public AutoScrollPane(int rows, int cols) {
-//		console = new JTextArea(rows, cols);
-//		console.setEditable(false);
-//		setViewportView(console);
-//		this.scrollBar = getVerticalScrollBar();
 		this();
 		console.setRows(rows);
 		console.setColumns(cols);

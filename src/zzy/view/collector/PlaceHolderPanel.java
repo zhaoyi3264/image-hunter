@@ -13,12 +13,20 @@ import javax.swing.JTextField;
 import zzy.document.IntegerDocument;
 import zzy.util.Utils;
 
+/**
+ * A panel that manage place holder enabling
+ * 
+ * @author Zhaoyi
+ */
 public class PlaceHolderPanel extends JPanel {
 	private static final long serialVersionUID = 8999125713650455100L;
 	private JCheckBox star;
 	private JTextField from;
 	private JTextField to;
 
+	/**
+	 * Construct the panel using girdbag layout
+	 */
 	public PlaceHolderPanel() {
 		star = new JCheckBox("Enable place holder (*)");
 		from = new JTextField(new IntegerDocument(), "", 5);
@@ -49,14 +57,29 @@ public class PlaceHolderPanel extends JPanel {
 		Utils.addComponent(this, gb, gc, to);
 	}
 
+	/**
+	 * Return true if the check box is selected
+	 * 
+	 * @return true if the check box is selected
+	 */
 	public boolean isStar() {
 		return star.isSelected();
 	}
 
+	/**
+	 * Return the integer in the text area
+	 * 
+	 * @return the integer in the text area
+	 */
 	public String getFrom() {
 		return from.getText();
 	}
 
+	/**
+	 * Return the integer in the text area
+	 * 
+	 * @return the integer in the text area
+	 */
 	public String getTo() {
 		return to.getText();
 	}

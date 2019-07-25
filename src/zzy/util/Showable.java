@@ -13,6 +13,12 @@ import zzy.dialog.DisplayDialog;
 import zzy.dialog.MessageDialog;
 import zzy.view.processor.AutoScrollPane;
 
+/**
+ * An interface that provides default implementations for showing a collectin of
+ * records
+ * 
+ * @author Zhaoyi
+ */
 public interface Showable {
 	default boolean hasRecords(Collection<String> records, JFrame parent) {
 		if (records.size() != 0)
