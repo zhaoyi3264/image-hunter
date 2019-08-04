@@ -1,5 +1,6 @@
 package zzy.worker.processor;
 
+import java.awt.Cursor;
 import java.awt.event.ActionEvent;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -21,6 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 
 import zzy.dialog.MessageDialog;
+import zzy.dialog.ProgressDialog;
 import zzy.util.Showable;
 import zzy.util.Timer;
 import zzy.util.Utils;
@@ -45,6 +47,7 @@ public abstract class Processor implements Showable { // TODO: use multiple-thre
 	protected File path;
 	protected Set<String> unexported;
 	protected List<String> failed;
+	private List<String> temp = null;
 
 	/**
 	 * Construct a processor with given unexported and failed records
@@ -110,12 +113,14 @@ public abstract class Processor implements Showable { // TODO: use multiple-thre
 	/**
 	 * Process the unexported records
 	 */
-	private void process() { // TODO: show the process
+	private void process() {
 		failed.clear();
 		Iterator<String> itr = unexported.iterator();
 		String url = null;
 		BufferedWriter writer = null;
+		ProgressDialog progress = new ProgressDialog(parent, unexported.size());
 		try {
+			Timer.start();
 			writer = new BufferedWriter(new FileWriter(path, true));
 			writer.append(getHeader()).write(System.lineSeparator());
 			while (itr.hasNext()) {
@@ -123,6 +128,7 @@ public abstract class Processor implements Showable { // TODO: use multiple-thre
 				try {
 					check(url);
 					writer.append(getTrueURL(url, 1)).write(System.lineSeparator());
+					progress.increment();
 				} catch (Exception e) {
 					failed.add(url);
 				}
@@ -131,10 +137,12 @@ public abstract class Processor implements Showable { // TODO: use multiple-thre
 		} catch (Exception e) {
 			console.log("IOException");
 		} finally {
+			progress.complete();
+			Timer.stop();
 			Utils.close(writer);
 		}
 	}
-
+	
 	// ------------------------------------------------------------------------------------------//
 
 	// export
@@ -142,15 +150,21 @@ public abstract class Processor implements Showable { // TODO: use multiple-thre
 	 * Export the unexported records
 	 */
 	public void export() {
-		List<String> temp = null;
 		if (failed.size() > 0)
 			temp = new LinkedList<String>(failed);
 		if (!hasRecords(unexported, parent))
 			return;
 
-		Timer.start();
+		// disable the main window and start
+		parent.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+		parent.setEnabled(false);
 		process();
-		Timer.stop();
+		
+		// enable the main window
+		parent.setEnabled(true);
+		parent.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+
+		// print finishing message
 		console.log(stars + stars);
 		console.log("Export complete");
 		int total = unexported.size();
@@ -251,7 +265,10 @@ public abstract class Processor implements Showable { // TODO: use multiple-thre
 	 */
 	public void openLocation() {
 		try {
-			Runtime.getRuntime().exec("explorer " + path.getAbsolutePath());
+			if (path.exists())
+				Runtime.getRuntime().exec("explorer " + path.getAbsolutePath());
+			else
+				throw new IOException();
 		} catch (IOException e) {
 			new MessageDialog(parent, "Error", "Cannot open\r\n" + path.getAbsolutePath());
 		}

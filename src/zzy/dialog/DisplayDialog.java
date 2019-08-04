@@ -1,6 +1,6 @@
 package zzy.dialog;
 
-import javax.swing.JFrame;
+import java.awt.Window;
 
 import zzy.view.processor.AutoScrollPane;
 
@@ -19,7 +19,7 @@ public class DisplayDialog extends CloseOnLoseFocusDialog {
 	 * @param parent - main window
 	 * @param title  - title of the dialog
 	 */
-	public DisplayDialog(JFrame parent, String title) {
+	public DisplayDialog(Window parent, String title) {
 		super(parent, title);
 		display = new AutoScrollPane(15, 30);
 		add(display);

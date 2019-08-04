@@ -1,13 +1,13 @@
 package zzy.dialog;
 
 import java.awt.Component;
+import java.awt.Window;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowFocusListener;
 
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 
 /**
  * A JDialog that can close when it loses the focus or certain key is pressed
@@ -16,7 +16,7 @@ import javax.swing.JFrame;
  */
 public class CloseOnLoseFocusDialog extends JDialog implements WindowFocusListener {
 	private static final long serialVersionUID = -6111093734415304704L;
-	private JFrame parent;
+	private Window parent;
 
 	/**
 	 * Construct a dialog
@@ -24,7 +24,7 @@ public class CloseOnLoseFocusDialog extends JDialog implements WindowFocusListen
 	 * @param parent - the main window
 	 * @param title  - title of the dialog
 	 */
-	public CloseOnLoseFocusDialog(JFrame parent, String title) {
+	public CloseOnLoseFocusDialog(Window parent, String title) {
 		super(parent, title);
 		this.parent = parent;
 		addWindowFocusListener(this);

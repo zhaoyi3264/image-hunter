@@ -31,9 +31,9 @@ import zzy.worker.processor.YandereProcessor;
  */
 public class ClipboardMonitor extends LoggableWindow {
 	private static final long serialVersionUID = 8497022326615912226L;
+	private static final String LINE_SEPARATOR = "---------------";
 
 	private final Clipboard cb = Toolkit.getDefaultToolkit().getSystemClipboard();
-	private static final String LINE_SEPARATOR = "---------------";
 	private Processor p;
 	private CollectorWindow c;
 	private String pre, content; // last and current record in the clipboard
@@ -45,7 +45,7 @@ public class ClipboardMonitor extends LoggableWindow {
 	 * COnstruct a main window of size 400 * 400
 	 */
 	public ClipboardMonitor() {
-		this(450, 450);
+		this(400, 400);
 	}
 
 	/**

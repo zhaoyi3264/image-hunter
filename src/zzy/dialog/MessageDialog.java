@@ -1,6 +1,7 @@
 package zzy.dialog;
 
-import javax.swing.JFrame;
+import java.awt.Window;
+
 import javax.swing.JTextArea;
 
 /**
@@ -19,7 +20,7 @@ public class MessageDialog extends CloseOnLoseFocusDialog {
 	 * @param title   - title of the dialog
 	 * @param message - message to print
 	 */
-	public MessageDialog(JFrame parent, String title, String message) {
+	public MessageDialog(Window parent, String title, String message) {
 		super(parent, title);
 		this.display = new JTextArea("\r\n    " + message + "    \r\n");
 		display.setEditable(false);
