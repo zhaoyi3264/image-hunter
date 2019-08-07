@@ -19,9 +19,9 @@ public class ProcessorButton extends JButton {
 		addActionListener((ActionEvent e) -> {
 			switch (e.getActionCommand()) {
 				case "Export":
-					new SwingWorker<Object, Object>() {
+					new SwingWorker<Void, Void>() {
 						@Override
-						protected Object doInBackground() throws Exception {
+						protected Void doInBackground() throws Exception {
 							parent.getProcessor().export();
 							return null;
 						}

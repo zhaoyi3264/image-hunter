@@ -3,6 +3,7 @@ package zzy.menu.processor;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.SwingWorker;
 
@@ -26,6 +27,7 @@ public class ExportMenu extends BasicMenu {
 		super(parent);
 		setText("Export");
 		setMnemonic('e');
+		JCheckBoxMenuItem onCopy = new JCheckBoxMenuItem("Export on copy");
 		JMenuItem ex = new JMenuItem("Export", KeyEvent.VK_X);
 		JMenuItem exTo = new JMenuItem("Export to...", KeyEvent.VK_T);
 		JMenuItem exExit = new JMenuItem("Export and exit", KeyEvent.VK_N);
@@ -35,6 +37,8 @@ public class ExportMenu extends BasicMenu {
 		setCTRLAccelerator(ex, KeyEvent.VK_E);
 		setCTRLAccelerator(exExit, KeyEvent.VK_BACK_SPACE);
 		setCTRLAccelerator(exF, KeyEvent.VK_F);
+		addMenuItems(this, onCopy);
+		addSeparator();
 		addMenuItems(this, ex, exTo, exExit);
 		addSeparator();
 		addMenuItems(this, exF, exFTo);
@@ -45,11 +49,14 @@ public class ExportMenu extends BasicMenu {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		new SwingWorker<Object, Object>(){
+		new SwingWorker<Void, Void>(){
 			@Override
-			protected Object doInBackground() throws Exception {
+			protected Void doInBackground() throws Exception {
 				Processor p = ((ClipboardMonitor) parent).getProcessor();
 				switch (e.getActionCommand()) {
+					case "Export on copy":
+						
+						break;
 					case "Export":
 						p.export();
 						break;

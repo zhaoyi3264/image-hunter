@@ -90,6 +90,8 @@ public class InputPanel extends JPanel {
 		co.setAttr(a);
 		co.setStarEnabled(place.isStar());
 		if (place.isStar()) {
+			if(!u.contains("*"))
+				throw new MalformedURLException("The URL does not contain *");
 			int f, t;
 			try {
 				f = Integer.parseInt(place.getFrom());

@@ -16,7 +16,16 @@ public class ProgressDialog extends JDialog {
 	private int completed;
 	private boolean complete;
 
-	public ProgressDialog(LoggableWindow parent, int total) {
+	public ProgressDialog(LoggableWindow parent, String title) {
+		super(parent);
+		bar = new JProgressBar(0, 100);
+		bar.setStringPainted(true);
+		bar.setString("");
+		bar.setIndeterminate(true);
+		display(parent, title);
+	}
+
+	public ProgressDialog(LoggableWindow parent, int total, String title) {
 		super(parent);
 		this.complete = false;
 		this.completed = 0;
@@ -25,10 +34,14 @@ public class ProgressDialog extends JDialog {
 		bar.setValue(0);
 		bar.setStringPainted(true);
 		bar.setString("0/" + total);
+		display(parent, title);
+	}
+
+	private void display(LoggableWindow parent, String title) {
 		add(bar);
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowDeactivated(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {
 				if (!complete)
 					setVisible(true);
 				else
@@ -37,8 +50,8 @@ public class ProgressDialog extends JDialog {
 		});
 		pack();
 		setLocationRelativeTo(parent);
-		setDefaultCloseOperation(HIDE_ON_CLOSE);
-		setTitle("Processing...");
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		setTitle(title);
 		setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 		setVisible(true);
 	}
@@ -49,9 +62,15 @@ public class ProgressDialog extends JDialog {
 		bar.setString(completed + "/" + total);
 	}
 
-	public void complete() {
-		setTitle("Process complete");
+	public void setText(String s) {
+		bar.setString(s);
+	}
+	
+	public void complete(String title) {
+		setTitle(title);
 		setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 		complete = true;
+		if(bar.isIndeterminate())
+			bar.setIndeterminate(false);
 	}
 }

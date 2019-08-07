@@ -40,9 +40,10 @@ public class ClipboardMonitor extends LoggableWindow {
 	private boolean monitoring;
 
 	private ModeComboBox box;
+	private TopMenuBar bar;
 
 	/**
-	 * COnstruct a main window of size 400 * 400
+	 * Construct a main window of size 400 * 400
 	 */
 	public ClipboardMonitor() {
 		this(400, 400);
@@ -57,6 +58,7 @@ public class ClipboardMonitor extends LoggableWindow {
 	public ClipboardMonitor(int w, int h) {
 //		changeToSystemUI();
 
+		setResizable(false);
 		// setup the GridBagLayout
 		GridBagLayout gb = new GridBagLayout();
 		GridBagConstraints gc = new GridBagConstraints();
@@ -75,12 +77,12 @@ public class ClipboardMonitor extends LoggableWindow {
 		gc.weighty = 8;
 		gc.fill = GridBagConstraints.BOTH;
 		Utils.addComponent(this, gb, gc, console);
-		
-		// create Processor according to the selected item in the combo box 
+
+		// create Processor according to the selected item in the combo box
 		changeProcessor();
 
 		// menu bar
-		setJMenuBar(new TopMenuBar(this));
+		setJMenuBar(bar = new TopMenuBar(this));
 
 		// buttons at the button
 		gc.weighty = 1;
@@ -91,7 +93,6 @@ public class ClipboardMonitor extends LoggableWindow {
 		Utils.addComponent(this, gb, gc, new ProcessorButton("Exit", this));
 
 		// initialize the window
-		// setResizable(false);
 		setAlwaysOnTop(true);
 		setTitle("Clipboard Monitor");
 		setSize(w, h);
@@ -104,7 +105,6 @@ public class ClipboardMonitor extends LoggableWindow {
 		initClipboard();
 		monitoring = true;
 		console.log("Monitoring the system clipboard");
-		c = new CollectorWindow(this);
 	}
 
 	// ----------------------Methods for Buttons and ComboBox------------------------------------//
@@ -121,6 +121,9 @@ public class ClipboardMonitor extends LoggableWindow {
 			console.log(LINE_SEPARATOR + "  Pause " + LINE_SEPARATOR);
 	}
 
+	/**
+	 * Pause the monitor and print message
+	 */
 	public void pause() {
 		if (monitoring)
 			changeStatus();
@@ -128,7 +131,12 @@ public class ClipboardMonitor extends LoggableWindow {
 			console.log(LINE_SEPARATOR + "  Pause " + LINE_SEPARATOR);
 	}
 
+	/**
+	 * Open the collector
+	 */
 	public void openCollector() {
+		if(c == null)
+			c = new CollectorWindow(this);
 		c.setLocationRelativeTo(this);
 		c.setVisible(true);
 	}
@@ -181,8 +189,19 @@ public class ClipboardMonitor extends LoggableWindow {
 		console.log(box.getSelectedItem() + " processor loaded");
 	}
 
+	/**
+	 * Return the processor
+	 * 
+	 * @return processor
+	 */
 	public Processor getProcessor() {
 		return p;
+	}
+
+	@Override
+	public void setEnabled(boolean b) {
+		bar.setEnabled(b);
+		box.setEnabled(b);
 	}
 
 	// ----------------------Methods for ClipboardMonitor---------------------------------------//
@@ -264,6 +283,11 @@ public class ClipboardMonitor extends LoggableWindow {
 		}
 	}
 
+	/**
+	 * The main method for the application
+	 * 
+	 * @param args unused
+	 */
 	public static void main(String[] args) {
 		ClipboardMonitor m = new ClipboardMonitor();
 		m.start();

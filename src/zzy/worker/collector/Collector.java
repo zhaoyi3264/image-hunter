@@ -4,8 +4,9 @@ import java.net.MalformedURLException;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Set;
+
+import javax.swing.SwingWorker;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,7 +15,6 @@ import org.jsoup.select.Elements;
 
 import zzy.dialog.MessageDialog;
 import zzy.util.Showable;
-import zzy.util.Timer;
 import zzy.view.collector.CollectorWindow;
 import zzy.view.processor.AutoScrollPane;
 import zzy.worker.processor.Processor;
@@ -131,28 +131,30 @@ public class Collector implements Showable {
 	 * Get the value of a certain attribute in the certain class
 	 * 
 	 * @param doc - the html document
-	 * @throws NoSuchElementException if no element found
 	 */
-	private void getAttrValuesByClass(Document doc) throws NoSuchElementException {
+	private int getAttrValuesByClass(Document doc) {
 		Elements elements = doc.getElementsByClass(clazz);
-		if (elements.size() == 0)
-			throw new NoSuchElementException("Elements with this class name not found");
+		if (elements.size() == 0) {
+			new MessageDialog(parent, "Error", "Elements with this class name not found");
+			return 0 ;
+		}
 		String temp = null;
 		for (Element element : elements) {
 			temp = element.attr(attr);
-			if (temp.length() == 0)
-				throw new NoSuchElementException("Element found but does not have this attribute");
+			if (temp.length() == 0) {
+				new MessageDialog(parent, "Error", "Element found but does not have this attribute");
+				return 0 ;
+			}
 			else
-				collected.add(temp); // .attr can be empty string
+				collected.add(temp); // .attr() can be empty string
 		}
+		return elements.size();
 	}
 
 	/**
 	 * Collect URLs on a single base URL
-	 * 
-	 * @throws NoSuchElementException if no element found
 	 */
-	private void collectSingle() throws NoSuchElementException {
+	private void collectSingle() {
 		collectSingle(this.url);
 	}
 
@@ -160,41 +162,44 @@ public class Collector implements Showable {
 	 * Collect URLs on a given url
 	 * 
 	 * @param url - the given base URL
-	 * @throws NoSuchElementException if no element found
 	 */
-	private void collectSingle(String url) throws NoSuchElementException {
-		Document doc = null;
-		try {
-			// transfer time out ???
-			doc = Jsoup.connect(url).get();
-		} catch (Exception e) {
-			failed.add(url);
-			return;
-		}
-		getAttrValuesByClass(doc);
+	private void collectSingle(String url) {
+		new SwingWorker<Void, Void>() {
+			int i = 0;
+			@Override
+			protected Void doInBackground() throws Exception {
+				Document doc = null;
+				try {
+					doc = Jsoup.connect(url).get();
+				} catch (Exception e) {
+					failed.add(url);
+					return null;
+				}
+				i = getAttrValuesByClass(doc);			
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				console.log(i + " URLs collected on " + url);
+			}
+		}.execute();
 	}
 
 	/**
 	 * Collect URLs from base URL by replacing * with index
-	 * 
-	 * @throws NoSuchElementException if no element found
 	 */
-	private void collectAll() throws NoSuchElementException {
-		int initSize = collected.size();
-		Timer.start();
+	private void collectAll() {
 		if (isStarEnabled) {
 			for (int i = from; i <= to; i++)
 				collectSingle(url.replace("*", "" + i));
 		} else {
 			collectSingle();
 		}
-		Timer.stop();
-		console.log("Time spent: " + Timer.returnStringTime() + "s");
-		console.log(collected.size() - initSize + " URLs collected");
-		if (failed.size() > 0)
-			console.log("Cannot collect URLs on:");
-		for (String url : failed)
-			console.log("    " + url);
+//		if (failed.size() > 0)
+//			console.log("Cannot collect URLs on:");
+//		for (String url : failed)
+//			console.log("    " + url);
 	}
 
 	/**
@@ -206,10 +211,6 @@ public class Collector implements Showable {
 			collectAll();
 		} catch (MalformedURLException ex) {
 			new MessageDialog(parent, "Error", ex.getMessage());
-			return;
-		} catch (NoSuchElementException ex) {
-			new MessageDialog(parent, "Error", ex.getMessage());
-			Timer.stop();
 			return;
 		}
 	}
@@ -223,13 +224,7 @@ public class Collector implements Showable {
 		LinkedList<String> temp = new LinkedList<String>(failed);
 		failed.clear();
 		for (String url : temp)
-			try {
-				collectSingle(url);
-			} catch (NoSuchElementException e) {
-				new MessageDialog(parent, "Error", e.getMessage());
-				Timer.stop();
-				return;
-			}
+			collectSingle(url);
 	}
 
 	/**

@@ -118,7 +118,7 @@ public abstract class Processor implements Showable { // TODO: use multiple-thre
 		Iterator<String> itr = unexported.iterator();
 		String url = null;
 		BufferedWriter writer = null;
-		ProgressDialog progress = new ProgressDialog(parent, unexported.size());
+		ProgressDialog progress = new ProgressDialog(parent, unexported.size(), "Processing...");
 		try {
 			Timer.start();
 			writer = new BufferedWriter(new FileWriter(path, true));
@@ -137,7 +137,8 @@ public abstract class Processor implements Showable { // TODO: use multiple-thre
 		} catch (Exception e) {
 			console.log("IOException");
 		} finally {
-			progress.complete();
+			progress.complete("Process complete");
+			progress = null;
 			Timer.stop();
 			Utils.close(writer);
 		}

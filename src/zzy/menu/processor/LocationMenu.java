@@ -34,7 +34,7 @@ public class LocationMenu extends BasicMenu {
 		JMenuItem clearLoc = new JMenuItem("Clear records in the current location", KeyEvent.VK_R);
 
 		setCTRLAccelerator(changeLoc, KeyEvent.VK_G);
-		setALTAccelerator(showLoc, KeyEvent.VK_L);
+		setALTAccelerator(showLoc, KeyEvent.VK_T);
 		setCTRLAccelerator(openLoc, KeyEvent.VK_O);
 		setCTRLAccelerator(clearLoc, KeyEvent.VK_R);
 		addMenuItems(this, changeLoc, showLoc, openLoc, clearLoc);

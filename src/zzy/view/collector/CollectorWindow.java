@@ -60,6 +60,7 @@ public class CollectorWindow extends LoggableWindow {
 		setJMenuBar(new TopMenuBar(this));
 
 		setSize(400, 400);
+		setResizable(false);
 		setTitle("Collector");
 		setAlwaysOnTop(true);
 		setDefaultCloseOperation(HIDE_ON_CLOSE);
